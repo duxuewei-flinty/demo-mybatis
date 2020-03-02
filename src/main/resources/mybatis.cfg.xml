@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--设置文件标准，规范文件内容-->
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <!--配置常用配置信息，可以引入外部文件-->
+    <properties resource="db.properties" />
+    <!--设置属性，如日志、缓存、懒加载等-->
+    <settings>
+        <!--配置日志输出-->
+        <setting name="logImpl" value="LOG4J2"/>
+        <setting name="cacheEnabled" value="true"/>
+    </settings>
+    <typeAliases>
+        <typeAlias type="com.dawn.domain.User" alias="User" ></typeAlias>
+        <package name="com.dawn.domain"/>
+    </typeAliases>
+    <!--环境变量，可以配置多个环境变量，通过设置default来选择默认读取文件
+        default指向默认的环境
+        每个SqlSessionFactory对应一个环境environment
+    -->
+    <environments default="mysql">
+        <environment id="mysql">
+            <!--配置缓存
+                JDBC【常用】 – 这个配置直接使用JDBC 的提交和回滚功能。它依赖于从数据源获得连接来管理
+                    事务的生命周期。
+                MANAGED – 这个配置基本上什么都不做。它从不提交或者回滚一个连接的事务。而是让
+                    容器（例如：Spring 或者J2EE 应用服务器）来管理事务的生命周期
+            -->
+            <transactionManager type="JDBC"/>
+            <!--数据源配置
+                UNPOOLED – 这个类型的数据源实现只是在每次需要的时候简单地打开和关闭连接。
+                POOLED – 这个数据源的实现缓存了JDBC 连接对象，用于避免每次创建新的数据库连接时都初始
+                    化和进行认证，加快程序响应。并发WEB 应用通常通过这种做法来获得快速响应。
+                JNDI – 这个数据源的配置是为了准备与像Spring 或应用服务器能够在外部或者内部配置数据
+                    源的容器一起使用，然后在JNDI 上下文中引用它
+            -->
+            <dataSource type="POOLED">
+                <property name="driver" value="${driver}"/>
+                <property name="url" value="${url}"/>
+                <property name="username" value="${username}"/>
+                <property name="password" value="${password}"/>
+            </dataSource>
+            <!--<dataSource type="POOLED">
+                 <property name="driver" value="com.mysql.cj.jdbc.Driver"/>
+                 <property name="url" value="jdbc:mysql://139.196.126.11:3306/mybatisdb"/>
+                 <property name="username" value="root"/>
+                 <property name="password" value="123456"/>
+             </dataSource>-->
+        </environment>
+    </environments>
+    <mappers>
+        <!-- 定义映射SQL语句文件。 -->
+        <mapper resource="mapper/UserMapper.xml"/>
+    </mappers>
+</configuration>

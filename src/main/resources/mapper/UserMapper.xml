@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--
+     namespace命名空间 防止sql语句的id重名
+     namespace 命名 包名+类名/包名+mapper文件名
+     parameterType 指sql语句参数类型
+     resultType 返回结果类型
+     useGeneratedKeys="true" 使用自增主键
+-->
+<mapper namespace="com.dawn.mapper.UserMapper" >
+    <!-- 插入
+        1，parameterType : 对应插入的属性，当有多个参数的时候，可以直接在接口上通过 @param的方式声明参数
+        2，parameterMap : 定义map参数类型，接口中的方法必须传递 map ，且必须声明 <parameterMap id="useMap" 节点
+        3，useGeneratedKeys ： 定义主键的生成策略，是否是自动增长
+    -->
+    <parameterMap id="useMap" type="com.dawn.domain.User" >
+        <parameter property="name" javaType="java.lang.String" ></parameter>
+        <parameter property="age" javaType="java.lang.Integer" ></parameter>
+        <parameter property="info" javaType="java.lang.String" ></parameter>
+    </parameterMap>
+    <!--<insert id="add" parameterType="com.dawn.domain.User" >-->
+    <insert id="add" parameterMap="useMap" useGeneratedKeys="true" >
+        insert into user (name,age,info) values (#{name},#{age},#{info})
+    </insert>
+    <!-- 更新 -->
+    <update id="update" parameterType="com.dawn.domain.User" >
+        update user set name=#{name},age=#{age},info=#{info} where id=#{id}
+    </update>
+    <!-- 删除 -->
+    <delete id="del" parameterType="java.lang.Integer" >
+        delete from user where id = #{id}
+    </delete>
+    <!-- 通过ID查询 -->
+    <select id="selectById" parameterType="java.lang.Integer" resultType="com.dawn.domain.User">
+        select * from user where id = #{id}
+    </select>
+
+    <resultMap id="rerurnUser" type="User" autoMapping="true" >
+        <id property="id" column="identity" ></id>
+        <result property="name" column="username" ></result>
+        <result property="age" column="userage" ></result>
+        <result property="info" column="infomation" ></result>
+    </resultMap>
+    <!-- 查询全部 -->
+    <select id="selectAll" resultMap="rerurnUser" >
+        select id as identity,name as username,age as userage, info as infomation from user
+    </select>
+
+    <!-- 查询全部 -->
+    <!--<select id="selectAll" resultType="com.dawn.domain.User">
+        select * from user
+    </select>-->
+
+    <!-- 查询全部 -->
+    <select id="selectLike" resultType="com.dawn.domain.User" parameterType="com.dawn.domain.User" >
+        <!--select * from user where name like #{name}-->
+        <!--select * from user where name like "%"#{name}"%"-->
+        <!--select * from user where name like "%${name}%"-->
+        <!--select * from user where name like CONCAT("%",#{name},"%")-->
+        <bind name="keyName" value="'%'+name+'%'"/>
+        select * from user where name like #{keyName}
+    </select>
+
+    <insert id="addParams" >
+<!--        insert into user (name,age,info) values (#{param1},#{param2},#{param3})-->
+        insert into user (name,age,info) values (#{name},#{age},#{info})
+    </insert>
+
+
+</mapper>

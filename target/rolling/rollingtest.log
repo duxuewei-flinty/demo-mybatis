@@ -1,0 +1,3 @@
+2020-02-29 16:44:14,107 DEBUG o.a.i.l.j.BaseJdbcLogger [main] ==>  Preparing: select * from user 
+2020-02-29 16:44:14,134 DEBUG o.a.i.l.j.BaseJdbcLogger [main] ==> Parameters: 
+2020-02-29 16:44:14,176 DEBUG o.a.i.l.j.BaseJdbcLogger [main] <==      Total: 18

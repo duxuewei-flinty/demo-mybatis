@@ -1,0 +1,20 @@
+Configuration:
+  status: OFF
+  appenders:
+    Console:
+      name: Console
+      PatternLayout:
+        Pattern: "%m%n"
+
+  Loggers:
+    logger:
+      -
+        name: dao.UserDao
+        level: debug
+        additivity: false
+        AppenderRef:
+          ref: Console
+    Root:
+      level: info
+      AppenderRef:
+        ref: Console
